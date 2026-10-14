@@ -230,6 +230,25 @@
         }
         .star-target:hover { background: #ffa91c; }
         .game-note { min-height: 1.5em; color: var(--muted); font-size: .92rem; }
+        .shooter-card { margin-top: 20px; }
+        .shooter-stage {
+            overflow: hidden;
+            border: 1px solid var(--line);
+            border-radius: 18px;
+            background: #102a43;
+            touch-action: none;
+        }
+        #shooterCanvas { display: block; width: 100%; height: 300px; }
+        .shooter-controls {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 14px;
+        }
+        .shooter-controls button { min-width: 62px; min-height: 48px; font-size: 1.15rem; touch-action: none; }
+        .shooter-controls .fire-button { min-width: 118px; background: #e76f51; }
+        .shooter-controls .fire-button:hover { background: #c94f34; }
+        .shooter-help { margin: 12px 0 0; color: var(--muted); font-size: .9rem; }
 
         footer { padding: 24px 10px 0; color: var(--muted); text-align: center; font-size: .9rem; }
 
@@ -352,6 +371,28 @@
                 <button type="button" id="startGame">Mulai bermain</button>
                 <p class="game-note" id="gameNote" aria-live="polite">Tarik napas, lalu tangkap bintangnya!</p>
             </section>
+
+            <section class="game-card shooter-card reveal" aria-labelledby="shooterTitle">
+                <span class="little-label">Arcade mini</span>
+                <h2 id="shooterTitle">Penjaga Bumi 🚀</h2>
+                <p>Tembak meteor sebelum menyentuh bumi! Kumpulkan skor sebanyak mungkin dengan tiga nyawa.</p>
+                <div class="game-stats" aria-live="polite">
+                    <div class="stat"><span>Skor</span><strong id="shooterScore">0</strong></div>
+                    <div class="stat"><span>Nyawa</span><strong id="shooterLives">3</strong></div>
+                    <div class="stat"><span>Rekor</span><strong id="shooterBest">0</strong></div>
+                </div>
+                <div class="shooter-stage">
+                    <canvas id="shooterCanvas" aria-label="Area permainan Penjaga Bumi. Gerakkan pesawat dan tembak meteor." role="img"></canvas>
+                </div>
+                <div class="shooter-controls" aria-label="Kontrol permainan">
+                    <button type="button" data-shooter-key="left" aria-label="Gerak ke kiri">◀</button>
+                    <button type="button" class="fire-button" data-shooter-key="fire" aria-label="Tembak">🔥 Tembak</button>
+                    <button type="button" data-shooter-key="right" aria-label="Gerak ke kanan">▶</button>
+                </div>
+                <p class="shooter-help">Keyboard: ← → atau A/D untuk bergerak, spasi untuk menembak. Bisa juga gunakan tombol di atas.</p>
+                <button type="button" id="shooterStart">Mulai bermain</button>
+                <p class="game-note" id="shooterMessage" aria-live="polite">Bumi membutuhkan penjaganya. Siap beraksi?</p>
+            </section>
         </main>
 
         <footer>Terima kasih sudah membaca. Semoga harimu terasa lebih ringan 🌿</footer>
@@ -370,11 +411,244 @@
         const bestScoreDisplay = document.getElementById("bestScore");
         const gameMessage = document.getElementById("gameMessage");
         const gameNote = document.getElementById("gameNote");
+        const shooterCanvas = document.getElementById("shooterCanvas");
+        const shooterContext = shooterCanvas.getContext("2d");
+        const shooterScoreDisplay = document.getElementById("shooterScore");
+        const shooterLivesDisplay = document.getElementById("shooterLives");
+        const shooterBestDisplay = document.getElementById("shooterBest");
+        const shooterStart = document.getElementById("shooterStart");
+        const shooterMessage = document.getElementById("shooterMessage");
         let score = 0;
         let bestScore = 0;
         let timeLeft = 15;
         let gameTimer;
         let gameActive = false;
+        let shooterActive = false;
+        let shooterFrame;
+        let shooterLastFrame = 0;
+        let shooterSpawnElapsed = 0;
+        let shooterFireElapsed = 0;
+        let shooterScore = 0;
+        let shooterLives = 3;
+        let shooterBest = 0;
+        let shooterPlayerX = 0;
+        const shooterKeys = new Set();
+        const shooterBullets = [];
+        const shooterMeteors = [];
+        const shooterStars = Array.from({ length: 45 }, () => ({
+            x: Math.random(),
+            y: Math.random(),
+            size: Math.random() * 1.5 + 0.4
+        }));
+
+        function resizeShooterCanvas() {
+            const bounds = shooterCanvas.getBoundingClientRect();
+            const ratio = window.devicePixelRatio || 1;
+            shooterCanvas.width = Math.round(bounds.width * ratio);
+            shooterCanvas.height = Math.round(bounds.height * ratio);
+            shooterContext.setTransform(ratio, 0, 0, ratio, 0, 0);
+            if (!shooterPlayerX) shooterPlayerX = bounds.width / 2;
+            else shooterPlayerX = Math.min(Math.max(20, shooterPlayerX), bounds.width - 20);
+            drawShooter();
+        }
+
+        function drawShooter() {
+            const width = shooterCanvas.clientWidth;
+            const height = shooterCanvas.clientHeight;
+            if (!width || !height) return;
+            shooterContext.clearRect(0, 0, width, height);
+            const sky = shooterContext.createLinearGradient(0, 0, 0, height);
+            sky.addColorStop(0, "#102a43");
+            sky.addColorStop(1, "#18566a");
+            shooterContext.fillStyle = sky;
+            shooterContext.fillRect(0, 0, width, height);
+
+            shooterContext.fillStyle = "rgba(255,255,255,.8)";
+            shooterStars.forEach((star) => {
+                shooterContext.globalAlpha = .45 + Math.abs(Math.sin(Date.now() / 650 + star.x * 20)) * .5;
+                shooterContext.beginPath();
+                shooterContext.arc(star.x * width, star.y * height, star.size, 0, Math.PI * 2);
+                shooterContext.fill();
+            });
+            shooterContext.globalAlpha = 1;
+
+            shooterContext.fillStyle = "#37bd91";
+            shooterContext.beginPath();
+            shooterContext.ellipse(width / 2, height + 55, width * .65, 82, 0, Math.PI, Math.PI * 2);
+            shooterContext.fill();
+            shooterContext.fillStyle = "#b8f0bd";
+            shooterContext.beginPath();
+            shooterContext.ellipse(width / 2, height + 59, width * .58, 72, 0, Math.PI, Math.PI * 2);
+            shooterContext.fill();
+
+            shooterMeteors.forEach((meteor) => {
+                shooterContext.fillStyle = "#f47b55";
+                shooterContext.beginPath();
+                shooterContext.arc(meteor.x, meteor.y, meteor.radius, 0, Math.PI * 2);
+                shooterContext.fill();
+                shooterContext.fillStyle = "#ffbd69";
+                shooterContext.beginPath();
+                shooterContext.arc(meteor.x - meteor.radius * .25, meteor.y - meteor.radius * .2, meteor.radius * .42, 0, Math.PI * 2);
+                shooterContext.fill();
+            });
+
+            shooterContext.fillStyle = "#7be7e0";
+            shooterBullets.forEach((bullet) => {
+                shooterContext.shadowColor = "#7be7e0";
+                shooterContext.shadowBlur = 12;
+                shooterContext.fillRect(bullet.x - 2, bullet.y - 8, 4, 15);
+            });
+            shooterContext.shadowBlur = 0;
+
+            shooterContext.font = "30px Segoe UI Emoji, sans-serif";
+            shooterContext.textAlign = "center";
+            shooterContext.textBaseline = "middle";
+            shooterContext.fillText("🚀", shooterPlayerX, height - 35);
+        }
+
+        function updateShooter(delta) {
+            const width = shooterCanvas.clientWidth;
+            const height = shooterCanvas.clientHeight;
+            const step = delta / 1000;
+            if (shooterKeys.has("left")) shooterPlayerX -= 300 * step;
+            if (shooterKeys.has("right")) shooterPlayerX += 300 * step;
+            shooterPlayerX = Math.max(18, Math.min(width - 18, shooterPlayerX));
+
+            shooterSpawnElapsed += delta;
+            shooterFireElapsed += delta;
+            const spawnDelay = Math.max(340, 900 - shooterScore * 12);
+            if (shooterSpawnElapsed >= spawnDelay) {
+                shooterSpawnElapsed = 0;
+                const radius = 13 + Math.random() * 9;
+                shooterMeteors.push({
+                    x: radius + Math.random() * (width - radius * 2),
+                    y: -radius,
+                    radius,
+                    speed: 75 + Math.random() * 65 + shooterScore * 2
+                });
+            }
+            if (shooterKeys.has("fire") && shooterFireElapsed >= 230) {
+                shooterFireElapsed = 0;
+                shooterBullets.push({ x: shooterPlayerX, y: height - 62 });
+            }
+
+            shooterBullets.forEach((bullet) => { bullet.y -= 390 * step; });
+            shooterMeteors.forEach((meteor) => { meteor.y += meteor.speed * step; });
+
+            for (let m = shooterMeteors.length - 1; m >= 0; m -= 1) {
+                const meteor = shooterMeteors[m];
+                let hit = false;
+                for (let b = shooterBullets.length - 1; b >= 0; b -= 1) {
+                    const bullet = shooterBullets[b];
+                    if (Math.hypot(meteor.x - bullet.x, meteor.y - bullet.y) < meteor.radius + 5) {
+                        shooterBullets.splice(b, 1);
+                        shooterMeteors.splice(m, 1);
+                        shooterScore += 1;
+                        shooterScoreDisplay.textContent = shooterScore;
+                        shooterMessage.textContent = "Meteor berhasil dihentikan! Terus lindungi bumi.";
+                        hit = true;
+                        break;
+                    }
+                }
+                if (hit) continue;
+                if (meteor.y - meteor.radius > height - 35) {
+                    shooterMeteors.splice(m, 1);
+                    shooterLives -= 1;
+                    shooterLivesDisplay.textContent = shooterLives;
+                    shooterMessage.textContent = "Satu meteor lolos! Tetap semangat.";
+                    if (shooterLives <= 0) {
+                        endShooterGame();
+                        return;
+                    }
+                }
+            }
+            for (let b = shooterBullets.length - 1; b >= 0; b -= 1) {
+                if (shooterBullets[b].y < -10) shooterBullets.splice(b, 1);
+            }
+        }
+
+        function shooterLoop(timestamp) {
+            if (!shooterActive) return;
+            const delta = Math.min(timestamp - shooterLastFrame, 40);
+            shooterLastFrame = timestamp;
+            updateShooter(delta);
+            drawShooter();
+            if (shooterActive) shooterFrame = window.requestAnimationFrame(shooterLoop);
+        }
+
+        function endShooterGame() {
+            shooterActive = false;
+            window.cancelAnimationFrame(shooterFrame);
+            shooterKeys.clear();
+            if (shooterScore > shooterBest) {
+                shooterBest = shooterScore;
+                shooterBestDisplay.textContent = shooterBest;
+                try {
+                    localStorage.setItem("duniaKitaShooterBest", String(shooterBest));
+                } catch (error) {
+                    shooterMessage.textContent = `Permainan selesai dengan ${shooterScore} poin. Rekor tidak dapat disimpan di perangkat ini.`;
+                    shooterStart.textContent = "Main lagi";
+                    return;
+                }
+            }
+            shooterMessage.textContent = `Permainan selesai! Skormu ${shooterScore}. ${shooterScore >= 15 ? "Penjaga bumi yang hebat! 🌍" : "Coba lagi dan kalahkan rekor!"}`;
+            shooterStart.textContent = "Main lagi";
+            drawShooter();
+        }
+
+        shooterStart.addEventListener("click", () => {
+            window.cancelAnimationFrame(shooterFrame);
+            shooterActive = true;
+            shooterScore = 0;
+            shooterLives = 3;
+            shooterSpawnElapsed = 0;
+            shooterFireElapsed = 230;
+            shooterLastFrame = 0;
+            shooterPlayerX = shooterCanvas.clientWidth / 2;
+            shooterBullets.length = 0;
+            shooterMeteors.length = 0;
+            shooterScoreDisplay.textContent = "0";
+            shooterLivesDisplay.textContent = "3";
+            shooterMessage.textContent = "Arahkan pesawat dan jangan biarkan meteor menyentuh bumi!";
+            shooterStart.textContent = "Permainan berlangsung…";
+            shooterFrame = window.requestAnimationFrame(shooterLoop);
+        });
+
+        window.addEventListener("keydown", (event) => {
+            if (!shooterActive) return;
+            const key = event.key.toLowerCase();
+            const mappedKey = key === "arrowleft" || key === "a" ? "left"
+                : key === "arrowright" || key === "d" ? "right"
+                    : key === " " ? "fire" : null;
+            if (mappedKey) {
+                event.preventDefault();
+                shooterKeys.add(mappedKey);
+            }
+        });
+
+        window.addEventListener("keyup", (event) => {
+            const key = event.key.toLowerCase();
+            if (key === "arrowleft" || key === "a") shooterKeys.delete("left");
+            if (key === "arrowright" || key === "d") shooterKeys.delete("right");
+            if (key === " ") shooterKeys.delete("fire");
+        });
+
+        document.querySelectorAll("[data-shooter-key]").forEach((button) => {
+            const key = button.dataset.shooterKey;
+            button.addEventListener("pointerdown", (event) => {
+                if (!shooterActive) return;
+                event.preventDefault();
+                shooterKeys.add(key);
+                button.setPointerCapture(event.pointerId);
+            });
+            const releaseKey = () => shooterKeys.delete(key);
+            button.addEventListener("pointerup", releaseKey);
+            button.addEventListener("pointercancel", releaseKey);
+            button.addEventListener("lostpointercapture", releaseKey);
+        });
+
+        window.addEventListener("blur", () => shooterKeys.clear());
+        window.addEventListener("resize", resizeShooterCanvas);
 
         function updateProgress() {
             const scrollable = document.documentElement.scrollHeight - window.innerHeight;
@@ -474,6 +748,14 @@
         } catch (error) {
             gameNote.textContent = "Skor terbaik sesi ini akan tetap dihitung selama halaman terbuka.";
         }
+
+        try {
+            shooterBest = Number(localStorage.getItem("duniaKitaShooterBest")) || 0;
+            shooterBestDisplay.textContent = shooterBest;
+        } catch (error) {
+            shooterMessage.textContent = "Rekor terbaik sesi ini akan dihitung selama halaman terbuka.";
+        }
+        resizeShooterCanvas();
     </script>
 </body>
 </html>
