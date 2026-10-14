@@ -1,138 +1,479 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-<body>
-    <header>
-        <h1>Selamat Datang di Dunia Kita</h1>
-    </header>
-
-    <container>
-        <div class="sisi-kiri">
-            <p><u>aku</u> <b>makan</b> <i>nasi</i> <strong>goreng</strong></p>
-            <p>Semua orang memiliki cara unik untuk melihat dunia, dan itulah yang membuat hidup terasa begitu berwarna.</p>
-        </div>
-
-        <div class="sisi-kanan">
-            <P>AKU SUKA KAMU</P>
-            <p>Ketika kita peduli terhadap sesama dan lingkungan, dunia akan terasa lebih hangat dan damai.</p>
-        </div>
-    </container>
-
-    <article>
-        <h2>Artikel tentang Dunia Ini</h2>
-
-        <p>Dunia ini adalah tempat yang luar biasa. Di dalamnya terdapat lautan yang luas, gunung yang menjulang, hutan yang hijau, serta kota-kota yang hidup dengan berbagai budaya dan cerita. Bumi bukan hanya rumah bagi manusia, tetapi juga tempat tinggal ribuan spesies tumbuhan, hewan, dan makhluk hidup lain yang saling bergantung satu sama lain. Keberagaman ini adalah bukti bahwa alam menciptakan keseimbangan yang sempurna jika dijaga dengan baik.</p>
-
-        <p>Namun, kehidupan modern sering kali membuat kita lupa akan betapa berharganya planet yang kita tinggali. Polusi, pembakaran hutan, dan penggunaan sumber daya alam yang berlebihan dapat menimbulkan dampak besar bagi kelangsungan hidup semua makhluk. Karena itu, menjaga alam bukan hanya tugas para aktivis lingkungan, tetapi kewajiban setiap individu. Kita bisa mulai dari hal sederhana, seperti membuang sampah pada tempatnya, menghemat air, menanam pohon, dan menghargai lingkungan sekitar.</p>
-
-        <figure>
-            <img src="../../wpu%20belajar%20web/photo.webp" alt="Pemandangan alam" width="300">
-            <figcaption>Pemandangan alam yang indah mengingatkan kita betapa luar biasanya dunia ini.</figcaption>
-        </figure>
-
-        <p>Selain menjaga alam, kita juga perlu menjaga hubungan antar manusia. Dunia ini penuh dengan berbagai suku, bahasa, adat, dan keyakinan. Perbedaan itu bukan halangan untuk saling memahami, melainkan peluang untuk belajar dan tumbuh bersama. Ketika kita menghormati satu sama lain, tercipta kehidupan sosial yang lebih damai, sejahtera, dan harmonis.</p>
-
-        <h3>Kenapa dunia ini begitu penting?</h3>
-        <ul>
-            <li>Karena di dalamnya terdapat kehidupan yang harus dijaga dengan baik.</li>
-            <li>Karena alam memberi kita udara, air, makanan, dan tempat tinggal.</li>
-            <li>Karena manusia perlu hidup berdampingan dengan rasa saling menghargai.</li>
-            <li>Karena bumi adalah warisan untuk generasi saat ini dan masa depan.</li>
-        </ul>
-
-        <p>Jika kita melihat kembali, dunia bukan hanya tentang kesuksesan, teknologi, atau kekuasaan. Dunia ini lebih dari itu. Dunia ini adalah tempat di mana manusia bisa belajar menjadi lebih baik, lebih bijaksana, dan lebih peduli. Dengan menjaga lingkungan, memperkuat toleransi, serta saling membantu, kita dapat membangun masa depan yang lebih cerah, lebih adil, dan lebih hijau.</p>
-
-        <blockquote>
-            "Dunia ini bukan hanya tempat tinggal kita, tetapi juga warisan yang harus kita jaga bersama untuk masa depan yang lebih baik."
-        </blockquote>
-
-        <div class="gallery">
-            <img src="../../wpu%20belajar%20web/game%20bagus.jpg" alt="Gambar game" width="250">
-            <img src="../../wpu%20belajar%20web/img%20aracade.avif" alt="Gambar arcade" width="250">
-        </div>
-
-        <p>Semoga kita semua sadar bahwa dunia ini adalah milik bersama. Setiap tindakan kecil yang kita lakukan hari ini dapat membawa perubahan besar di masa depan. Mari kita tetap menjaga bumi, memelihara hubungan baik, dan menebarkan kebaikan di setiap langkah hidup kita.</p>
-    </article>
-
+    <meta name="theme-color" content="#102a43">
+    <title>Dunia Kita — Cerita tentang Bumi</title>
     <style>
+        :root {
+            color-scheme: light;
+            --ink: #18324a;
+            --muted: #587087;
+            --paper: #fff;
+            --page: #f2f8fb;
+            --accent: #087f8c;
+            --accent-dark: #05616b;
+            --soft: #e5f5f2;
+            --line: #d7e7ec;
+            --shadow: 0 18px 50px rgba(20, 55, 75, .1);
+        }
+
+        * { box-sizing: border-box; }
+
+        html { scroll-behavior: smooth; }
+
         body {
-            font-family: Arial, sans-serif;
-            background: linear-gradient(to bottom, #eaf7ff, #ffffff);
             margin: 0;
-            padding: 20px;
-        }
-
-        header {
-            text-align: center;
-            background: #2d6cdf;
-            color: white;
-            padding: 20px;
-            border-radius: 12px;
-            margin-bottom: 20px;
-        }
-
-        h1, h2, h3 {
-            color: #1f3c88;
-        }
-
-        container {
-            display: flex;
-            gap: 20px;
-            margin-bottom: 30px;
-        }
-
-        .sisi-kiri, .sisi-kanan {
-            flex: 1;
-            background: #f4f9ff;
-            border: 1px solid #cfe2ff;
-            padding: 15px;
-            border-radius: 10px;
-        }
-
-        article {
-            background: #ffffff;
-            padding: 25px;
-            border-radius: 12px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+            padding: 0 22px 48px;
+            color: var(--ink);
+            background:
+                radial-gradient(ellipse at 8% 12%, rgba(143, 226, 206, .22), transparent 28rem),
+                radial-gradient(ellipse at 92% 36%, rgba(167, 210, 248, .24), transparent 28rem),
+                var(--page);
+            font-family: "Segoe UI", Arial, sans-serif;
             line-height: 1.8;
+            transition: background-color .35s ease, color .35s ease;
         }
 
-        figure {
+        .progress-track {
+            position: fixed;
+            z-index: 10;
+            inset: 0 0 auto;
+            height: 4px;
+            background: transparent;
+        }
+
+        .progress-bar {
+            width: 0;
+            height: 100%;
+            background: linear-gradient(90deg, #72e0bd, #ffc857);
+            transition: width .12s linear;
+        }
+
+        .page-shell { max-width: 1000px; margin: 0 auto; }
+
+        .hero {
+            position: relative;
+            isolation: isolate;
+            overflow: hidden;
+            margin: 30px auto 22px;
+            padding: clamp(36px, 8vw, 76px) 24px;
+            border: 1px solid rgba(255,255,255,.18);
+            border-radius: 28px;
+            color: white;
             text-align: center;
-            margin: 25px 0;
+            background: linear-gradient(125deg, #102a43, #087f8c 58%, #38a88d);
+            box-shadow: 0 22px 55px rgba(7, 70, 82, .2);
+            animation: hero-arrive .8s both;
         }
 
-        img {
-            border-radius: 12px;
-            box-shadow: 0 3px 10px rgba(0,0,0,0.15);
+        .hero::before, .hero::after {
+            position: absolute;
+            z-index: -1;
+            width: 230px;
+            height: 230px;
+            border: 1px solid rgba(255,255,255,.2);
+            border-radius: 50%;
+            content: "";
+            animation: orbit 18s linear infinite;
         }
 
-        .gallery {
+        .hero::before { top: -120px; left: -50px; box-shadow: 0 0 0 25px rgba(255,255,255,.04), 0 0 0 55px rgba(255,255,255,.03); }
+        .hero::after { right: -90px; bottom: -165px; width: 320px; height: 320px; animation-direction: reverse; }
+
+        .eyebrow {
+            margin: 0 0 8px;
+            color: #b7f2df;
+            font-size: .82rem;
+            font-weight: 700;
+            letter-spacing: .18em;
+            text-transform: uppercase;
+        }
+
+        .hero h1 {
+            margin: 0;
+            color: #fff;
+            font-size: clamp(2.1rem, 6vw, 4rem);
+            line-height: 1.12;
+            letter-spacing: -.04em;
+        }
+
+        .hero-copy { max-width: 580px; margin: 18px auto 0; color: #e4f7f3; }
+
+        .toolbar {
             display: flex;
-            gap: 20px;
             justify-content: center;
+            gap: 10px;
+            margin: 0 auto 28px;
             flex-wrap: wrap;
-            margin: 20px 0;
         }
+
+        button {
+            min-height: 44px;
+            padding: 10px 17px;
+            border: 0;
+            border-radius: 999px;
+            color: white;
+            background: var(--accent);
+            font: inherit;
+            font-weight: 700;
+            cursor: pointer;
+            transition: transform .2s ease, background .2s ease, box-shadow .2s ease;
+        }
+
+        button:hover { transform: translateY(-2px); background: var(--accent-dark); box-shadow: 0 7px 18px rgba(8,127,140,.2); }
+        button:focus-visible, a:focus-visible { outline: 3px solid #ffbf47; outline-offset: 3px; }
+        button:active { transform: scale(.97); }
+
+        .toolbar button {
+            color: var(--ink);
+            background: rgba(255,255,255,.8);
+            border: 1px solid var(--line);
+        }
+
+        .intro {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 16px;
+            margin-bottom: 22px;
+        }
+
+        .intro-card, article, .game-card {
+            border: 1px solid var(--line);
+            border-radius: 20px;
+            background: var(--paper);
+            box-shadow: var(--shadow);
+        }
+
+        .intro-card { padding: 22px; transition: transform .25s ease, box-shadow .25s ease; }
+        .intro-card:hover { transform: translateY(-5px); box-shadow: 0 22px 42px rgba(20,55,75,.14); }
+        .intro-card p { margin: 0; }
+        .intro-card p + p { margin-top: 8px; color: var(--muted); }
+        .intro-card strong { color: var(--accent); }
+        .little-label { display: inline-block; margin-bottom: 8px; color: var(--accent); font-size: .78rem; font-weight: 800; letter-spacing: .12em; text-transform: uppercase; }
+
+        article { padding: clamp(22px, 5vw, 48px); }
+        article > h2 { margin-top: 0; font-size: clamp(1.7rem, 4vw, 2.3rem); }
+        h2, h3 { color: var(--ink); line-height: 1.3; }
+        article p { color: var(--muted); }
+
+        figure { margin: 30px 0; text-align: center; }
+        figure img { width: min(100%, 500px); height: auto; }
+        img {
+            display: block;
+            max-width: 100%;
+            margin: 0 auto;
+            border-radius: 16px;
+            box-shadow: 0 12px 28px rgba(20,55,75,.16);
+            transition: transform .45s cubic-bezier(.2,.8,.2,1), box-shadow .35s ease;
+        }
+        img:hover { transform: scale(1.025) rotate(-.5deg); box-shadow: 0 18px 35px rgba(20,55,75,.22); }
+        figcaption { margin-top: 12px; color: var(--muted); font-size: .92rem; }
 
         blockquote {
-            background: #f0f8ff;
-            border-left: 5px solid #2d6cdf;
-            padding: 15px 20px;
-            margin: 20px 0;
+            margin: 28px 0;
+            padding: 18px 22px;
+            border-left: 4px solid #38a88d;
+            border-radius: 0 14px 14px 0;
+            color: var(--ink);
+            background: var(--soft);
+            font-size: 1.08rem;
             font-style: italic;
         }
 
-        ul {
-            background: #f9fbff;
-            padding: 15px 30px;
-            border-radius: 10px;
+        ul { padding: 18px 24px 18px 42px; border-radius: 14px; background: var(--page); }
+        li { padding: 3px 0; color: var(--muted); }
+        li::marker { color: var(--accent); }
+
+        .gallery { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px; margin: 28px 0; }
+        .gallery img { width: 100%; height: 230px; object-fit: cover; }
+
+        .game-card {
+            margin-top: 24px;
+            padding: clamp(22px, 5vw, 36px);
+            text-align: center;
+            background: linear-gradient(145deg, var(--paper), var(--soft));
+        }
+        .game-card h2 { margin: 0 0 5px; }
+        .game-card > p { margin: 0 0 18px; color: var(--muted); }
+        .game-stats { display: flex; justify-content: center; gap: 12px; margin-bottom: 15px; flex-wrap: wrap; }
+        .stat { min-width: 110px; padding: 8px 14px; border: 1px solid var(--line); border-radius: 14px; background: var(--paper); }
+        .stat span { display: block; color: var(--muted); font-size: .76rem; text-transform: uppercase; letter-spacing: .08em; }
+        .stat strong { color: var(--accent); font-size: 1.2rem; }
+        .game-board {
+            position: relative;
+            overflow: hidden;
+            min-height: 190px;
+            margin: 14px 0;
+            border: 1px dashed #8fcac1;
+            border-radius: 18px;
+            background:
+                radial-gradient(circle at 20% 25%, rgba(255,255,255,.9) 0 2px, transparent 3px),
+                radial-gradient(circle at 80% 70%, rgba(255,255,255,.8) 0 2px, transparent 3px),
+                linear-gradient(135deg, #e7f8f4, #eaf3ff);
+        }
+        .game-message { position: absolute; inset: 50% 12px auto; margin: 0; color: #36586b; transform: translateY(-50%); }
+        .game-message[hidden] { display: none; }
+        .star-target {
+            position: absolute;
+            display: none;
+            width: 52px;
+            height: 52px;
+            min-height: 0;
+            padding: 0;
+            border-radius: 50%;
+            background: #ffbd4a;
+            box-shadow: 0 0 0 8px rgba(255,189,74,.2), 0 7px 18px rgba(159,101,14,.22);
+            font-size: 1.6rem;
+            animation: star-pop .35s cubic-bezier(.2,1.5,.5,1) both, star-glow 1.2s ease-in-out infinite alternate;
+        }
+        .star-target:hover { background: #ffa91c; }
+        .game-note { min-height: 1.5em; color: var(--muted); font-size: .92rem; }
+
+        footer { padding: 24px 10px 0; color: var(--muted); text-align: center; font-size: .9rem; }
+
+        .reveal { opacity: 0; transform: translateY(22px); transition: opacity .65s ease, transform .65s cubic-bezier(.2,.7,.2,1); }
+        .reveal.is-visible { opacity: 1; transform: translateY(0); }
+        .font-large article { font-size: 1.12rem; }
+
+        body.dark {
+            color-scheme: dark;
+            --ink: #e7f0f6;
+            --muted: #b5c7d5;
+            --paper: #172b3a;
+            --page: #10202c;
+            --accent: #5bc4b2;
+            --accent-dark: #2fa394;
+            --soft: #1e3a43;
+            --line: #2b4555;
+            --shadow: 0 18px 50px rgba(0,0,0,.18);
+        }
+        body.dark { background: radial-gradient(ellipse at 8% 12%, rgba(32,102,92,.2), transparent 28rem), var(--page); }
+        body.dark .toolbar button { color: var(--ink); background: var(--paper); }
+        body.dark .game-board { background: linear-gradient(135deg, #203d43, #24364b); }
+        body.dark .game-message { color: var(--ink); }
+
+        @keyframes hero-arrive { from { opacity: 0; transform: translateY(18px) scale(.985); } to { opacity: 1; transform: translateY(0) scale(1); } }
+        @keyframes orbit { to { transform: rotate(360deg); } }
+        @keyframes star-pop { from { opacity: 0; transform: scale(.35) rotate(-25deg); } to { opacity: 1; transform: scale(1) rotate(0); } }
+        @keyframes star-glow { to { box-shadow: 0 0 0 13px rgba(255,189,74,.12), 0 7px 22px rgba(159,101,14,.3); } }
+
+        @media (max-width: 640px) {
+            body { padding: 0 14px 32px; }
+            .hero { margin-top: 18px; border-radius: 22px; }
+            .intro, .gallery { grid-template-columns: 1fr; }
+            .gallery img { height: auto; max-height: 280px; }
+            article { padding: 24px 20px; }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after { scroll-behavior: auto !important; animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
+            .reveal { opacity: 1; transform: none; }
         }
     </style>
+</head>
+<body>
+    <div class="progress-track" aria-hidden="true"><div class="progress-bar" id="progressBar"></div></div>
+    <div class="page-shell">
+        <header class="hero">
+            <p class="eyebrow">Sebuah jeda untuk menikmati bumi</p>
+            <h1>Selamat Datang<br>di Dunia Kita</h1>
+            <p class="hero-copy">Cerita kecil tentang rumah yang kita bagi bersama—dan hal-hal baik yang bisa kita lakukan untuknya.</p>
+        </header>
+
+        <nav class="toolbar" aria-label="Pengaturan tampilan">
+            <button type="button" id="themeToggle" aria-pressed="false">🌙 Mode malam</button>
+            <button type="button" id="fontToggle" aria-pressed="false">Aa Perbesar teks</button>
+            <button type="button" id="topButton">↑ Kembali ke atas</button>
+        </nav>
+
+        <section class="intro" aria-label="Sapaan">
+            <div class="intro-card reveal">
+                <span class="little-label">Sapaan hangat</span>
+                <p><u>Aku</u> <b>makan</b> <i>nasi</i> <strong>goreng</strong></p>
+                <p>Semua orang memiliki cara unik untuk melihat dunia, dan itulah yang membuat hidup terasa begitu berwarna.</p>
+            </div>
+            <div class="intro-card reveal">
+                <span class="little-label">Saling peduli</span>
+                <p><strong>Aku suka kamu</strong></p>
+                <p>Ketika kita peduli terhadap sesama dan lingkungan, dunia akan terasa lebih hangat dan damai.</p>
+            </div>
+        </section>
+
+        <main>
+            <article class="reveal">
+                <h2>Artikel tentang Dunia Ini</h2>
+
+                <p>Dunia ini adalah tempat yang luar biasa. Di dalamnya terdapat lautan yang luas, gunung yang menjulang, hutan yang hijau, serta kota-kota yang hidup dengan berbagai budaya dan cerita. Bumi bukan hanya rumah bagi manusia, tetapi juga tempat tinggal ribuan spesies tumbuhan, hewan, dan makhluk hidup lain yang saling bergantung satu sama lain. Keberagaman ini adalah bukti bahwa alam menciptakan keseimbangan yang sempurna jika dijaga dengan baik.</p>
+
+                <p>Namun, kehidupan modern sering kali membuat kita lupa akan betapa berharganya planet yang kita tinggali. Polusi, pembakaran hutan, dan penggunaan sumber daya alam yang berlebihan dapat menimbulkan dampak besar bagi kelangsungan hidup semua makhluk. Karena itu, menjaga alam bukan hanya tugas para aktivis lingkungan, tetapi kewajiban setiap individu. Kita bisa mulai dari hal sederhana, seperti membuang sampah pada tempatnya, menghemat air, menanam pohon, dan menghargai lingkungan sekitar.</p>
+
+                <figure>
+                    <img src="../../wpu%20belajar%20web/photo.webp" alt="Pemandangan alam yang hijau dan menenangkan" width="500">
+                    <figcaption>Pemandangan alam yang indah mengingatkan kita betapa luar biasanya dunia ini.</figcaption>
+                </figure>
+
+                <p>Selain menjaga alam, kita juga perlu menjaga hubungan antar manusia. Dunia ini penuh dengan berbagai suku, bahasa, adat, dan keyakinan. Perbedaan itu bukan halangan untuk saling memahami, melainkan peluang untuk belajar dan tumbuh bersama. Ketika kita menghormati satu sama lain, tercipta kehidupan sosial yang lebih damai, sejahtera, dan harmonis.</p>
+
+                <h3>Kenapa dunia ini begitu penting?</h3>
+                <ul>
+                    <li>Karena di dalamnya terdapat kehidupan yang harus dijaga dengan baik.</li>
+                    <li>Karena alam memberi kita udara, air, makanan, dan tempat tinggal.</li>
+                    <li>Karena manusia perlu hidup berdampingan dengan rasa saling menghargai.</li>
+                    <li>Karena bumi adalah warisan untuk generasi saat ini dan masa depan.</li>
+                </ul>
+
+                <p>Jika kita melihat kembali, dunia bukan hanya tentang kesuksesan, teknologi, atau kekuasaan. Dunia ini lebih dari itu. Dunia ini adalah tempat di mana manusia bisa belajar menjadi lebih baik, lebih bijaksana, dan lebih peduli. Dengan menjaga lingkungan, memperkuat toleransi, serta saling membantu, kita dapat membangun masa depan yang lebih cerah, lebih adil, dan lebih hijau.</p>
+
+                <blockquote>“Dunia ini bukan hanya tempat tinggal kita, tetapi juga warisan yang harus kita jaga bersama untuk masa depan yang lebih baik.”</blockquote>
+
+                <div class="gallery" aria-label="Galeri permainan">
+                    <img src="../../wpu%20belajar%20web/game%20bagus.jpg" alt="Suasana permainan yang seru" width="400" loading="lazy">
+                    <img src="../../wpu%20belajar%20web/img%20aracade.avif" alt="Mesin permainan arcade" width="400" loading="lazy">
+                </div>
+
+                <p>Semoga kita semua sadar bahwa dunia ini adalah milik bersama. Setiap tindakan kecil yang kita lakukan hari ini dapat membawa perubahan besar di masa depan. Mari kita tetap menjaga bumi, memelihara hubungan baik, dan menebarkan kebaikan di setiap langkah hidup kita.</p>
+            </article>
+
+            <section class="game-card reveal" aria-labelledby="gameTitle">
+                <span class="little-label">Istirahat sebentar</span>
+                <h2 id="gameTitle">Tangkap Bintang! ⭐</h2>
+                <p>Klik bintangnya sebanyak mungkin sebelum waktu habis. Siap menguji refleks?</p>
+                <div class="game-stats" aria-live="polite">
+                    <div class="stat"><span>Skor</span><strong id="score">0</strong></div>
+                    <div class="stat"><span>Waktu</span><strong><span id="time">15</span> dtk</strong></div>
+                    <div class="stat"><span>Rekor</span><strong id="bestScore">0</strong></div>
+                </div>
+                <div class="game-board" id="gameBoard">
+                    <p class="game-message" id="gameMessage">Tekan “Mulai bermain” untuk memulai tantangan.</p>
+                    <button type="button" class="star-target" id="starTarget" aria-label="Tangkap bintang">⭐</button>
+                </div>
+                <button type="button" id="startGame">Mulai bermain</button>
+                <p class="game-note" id="gameNote" aria-live="polite">Tarik napas, lalu tangkap bintangnya!</p>
+            </section>
+        </main>
+
+        <footer>Terima kasih sudah membaca. Semoga harimu terasa lebih ringan 🌿</footer>
+    </div>
+
+    <script>
+        const progressBar = document.getElementById("progressBar");
+        const themeToggle = document.getElementById("themeToggle");
+        const fontToggle = document.getElementById("fontToggle");
+        const topButton = document.getElementById("topButton");
+        const gameBoard = document.getElementById("gameBoard");
+        const starTarget = document.getElementById("starTarget");
+        const startGame = document.getElementById("startGame");
+        const scoreDisplay = document.getElementById("score");
+        const timeDisplay = document.getElementById("time");
+        const bestScoreDisplay = document.getElementById("bestScore");
+        const gameMessage = document.getElementById("gameMessage");
+        const gameNote = document.getElementById("gameNote");
+        let score = 0;
+        let bestScore = 0;
+        let timeLeft = 15;
+        let gameTimer;
+        let gameActive = false;
+
+        function updateProgress() {
+            const scrollable = document.documentElement.scrollHeight - window.innerHeight;
+            const progress = scrollable > 0 ? (window.scrollY / scrollable) * 100 : 0;
+            progressBar.style.width = `${Math.min(progress, 100)}%`;
+        }
+
+        window.addEventListener("scroll", updateProgress, { passive: true });
+        window.addEventListener("resize", updateProgress);
+        updateProgress();
+
+        themeToggle.addEventListener("click", () => {
+            const isDark = document.body.classList.toggle("dark");
+            themeToggle.setAttribute("aria-pressed", String(isDark));
+            themeToggle.textContent = isDark ? "☀️ Mode terang" : "🌙 Mode malam";
+        });
+
+        fontToggle.addEventListener("click", () => {
+            const isLarge = document.body.classList.toggle("font-large");
+            fontToggle.setAttribute("aria-pressed", String(isLarge));
+            fontToggle.textContent = isLarge ? "Aa Kecilkan teks" : "Aa Perbesar teks";
+        });
+
+        topButton.addEventListener("click", () => window.scrollTo({ top: 0, behavior: "smooth" }));
+
+        const revealItems = document.querySelectorAll(".reveal");
+        if ("IntersectionObserver" in window) {
+            const revealObserver = new IntersectionObserver((entries, observer) => {
+                entries.forEach((entry) => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add("is-visible");
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, { threshold: 0.12 });
+            revealItems.forEach((item) => revealObserver.observe(item));
+        } else {
+            revealItems.forEach((item) => item.classList.add("is-visible"));
+        }
+
+        function moveStar() {
+            const maxX = Math.max(0, gameBoard.clientWidth - starTarget.offsetWidth);
+            const maxY = Math.max(0, gameBoard.clientHeight - starTarget.offsetHeight);
+            starTarget.style.left = `${Math.random() * maxX}px`;
+            starTarget.style.top = `${Math.random() * maxY}px`;
+        }
+
+        function endGame() {
+            gameActive = false;
+            window.clearInterval(gameTimer);
+            starTarget.style.display = "none";
+            if (score > bestScore) {
+                bestScore = score;
+                bestScoreDisplay.textContent = bestScore;
+                try {
+                    localStorage.setItem("duniaKitaBestScore", String(bestScore));
+                } catch (error) {
+                    gameNote.textContent = "Skor terbaik kali ini tidak dapat disimpan di perangkat.";
+                }
+            }
+            gameMessage.textContent = `Waktu habis! Kamu berhasil menangkap ${score} bintang.`;
+            gameMessage.hidden = false;
+            startGame.textContent = "Main lagi";
+            if (score >= 10) gameNote.textContent = "Hebat, refleksmu cepat sekali! ✨";
+            else if (score <= bestScore) gameNote.textContent = "Bagus! Coba lagi untuk mengalahkan skormu.";
+        }
+
+        startGame.addEventListener("click", () => {
+            window.clearInterval(gameTimer);
+            score = 0;
+            timeLeft = 15;
+            gameActive = true;
+            scoreDisplay.textContent = score;
+            timeDisplay.textContent = timeLeft;
+            gameMessage.hidden = true;
+            gameNote.textContent = "Tangkap bintangnya!";
+            startGame.textContent = "Sedang bermain…";
+            moveStar();
+            starTarget.style.display = "block";
+            gameTimer = window.setInterval(() => {
+                timeLeft -= 1;
+                timeDisplay.textContent = timeLeft;
+                if (timeLeft <= 0) endGame();
+            }, 1000);
+        });
+
+        starTarget.addEventListener("click", () => {
+            if (!gameActive) return;
+            score += 1;
+            scoreDisplay.textContent = score;
+            moveStar();
+        });
+
+        try {
+            bestScore = Number(localStorage.getItem("duniaKitaBestScore")) || 0;
+            bestScoreDisplay.textContent = bestScore;
+        } catch (error) {
+            gameNote.textContent = "Skor terbaik sesi ini akan tetap dihitung selama halaman terbuka.";
+        }
+    </script>
 </body>
 </html>
-
