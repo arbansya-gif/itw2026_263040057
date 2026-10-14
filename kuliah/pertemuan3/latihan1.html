@@ -375,14 +375,14 @@
             <section class="game-card shooter-card reveal" aria-labelledby="shooterTitle">
                 <span class="little-label">Arcade mini</span>
                 <h2 id="shooterTitle">Penjaga Bumi 🚀</h2>
-                <p>Tembak meteor sebelum menyentuh bumi! Kumpulkan skor sebanyak mungkin dengan tiga nyawa.</p>
+                <p>Hancurkan meteor yang bergerak lebih pelan dan hadapi musuh yang menembakkan proyektil ke arah pesawatmu. Kamu punya tiga nyawa.</p>
                 <div class="game-stats" aria-live="polite">
                     <div class="stat"><span>Skor</span><strong id="shooterScore">0</strong></div>
                     <div class="stat"><span>Nyawa</span><strong id="shooterLives">3</strong></div>
                     <div class="stat"><span>Rekor</span><strong id="shooterBest">0</strong></div>
                 </div>
                 <div class="shooter-stage">
-                    <canvas id="shooterCanvas" aria-label="Area permainan Penjaga Bumi. Gerakkan pesawat dan tembak meteor." role="img"></canvas>
+                    <canvas id="shooterCanvas" aria-label="Area permainan Penjaga Bumi. Gerakkan pesawat, tembak meteor dan musuh, serta hindari proyektil musuh." role="img"></canvas>
                 </div>
                 <div class="shooter-controls" aria-label="Kontrol permainan">
                     <button type="button" data-shooter-key="left" aria-label="Gerak ke kiri">◀</button>
@@ -435,6 +435,9 @@
         const shooterKeys = new Set();
         const shooterBullets = [];
         const shooterMeteors = [];
+        const shooterEnemies = [];
+        const shooterEnemyShots = [];
+        let shooterEnemySpawnElapsed = 0;
         const shooterStars = Array.from({ length: 45 }, () => ({
             x: Math.random(),
             y: Math.random(),
@@ -492,11 +495,28 @@
                 shooterContext.fill();
             });
 
+            shooterEnemies.forEach((enemy) => {
+                shooterContext.font = "30px Segoe UI Emoji, sans-serif";
+                shooterContext.textAlign = "center";
+                shooterContext.textBaseline = "middle";
+                shooterContext.fillText("👾", enemy.x, enemy.y);
+            });
+
             shooterContext.fillStyle = "#7be7e0";
             shooterBullets.forEach((bullet) => {
                 shooterContext.shadowColor = "#7be7e0";
                 shooterContext.shadowBlur = 12;
                 shooterContext.fillRect(bullet.x - 2, bullet.y - 8, 4, 15);
+            });
+            shooterContext.shadowBlur = 0;
+
+            shooterEnemyShots.forEach((shot) => {
+                shooterContext.fillStyle = "#ff6577";
+                shooterContext.shadowColor = "#ff6577";
+                shooterContext.shadowBlur = 10;
+                shooterContext.beginPath();
+                shooterContext.arc(shot.x, shot.y, 5, 0, Math.PI * 2);
+                shooterContext.fill();
             });
             shooterContext.shadowBlur = 0;
 
@@ -516,7 +536,8 @@
 
             shooterSpawnElapsed += delta;
             shooterFireElapsed += delta;
-            const spawnDelay = Math.max(340, 900 - shooterScore * 12);
+            shooterEnemySpawnElapsed += delta;
+            const spawnDelay = Math.max(750, 1600 - shooterScore * 10);
             if (shooterSpawnElapsed >= spawnDelay) {
                 shooterSpawnElapsed = 0;
                 const radius = 13 + Math.random() * 9;
@@ -524,8 +545,18 @@
                     x: radius + Math.random() * (width - radius * 2),
                     y: -radius,
                     radius,
-                    speed: 75 + Math.random() * 65 + shooterScore * 2
+                    speed: Math.min(65, 32 + Math.random() * 18 + shooterScore * .35)
                 });
+            }
+            if (shooterEnemies.length === 0 && shooterEnemySpawnElapsed >= 5000) {
+                shooterEnemySpawnElapsed = 0;
+                shooterEnemies.push({
+                    x: 35 + Math.random() * Math.max(1, width - 70),
+                    y: 48 + Math.random() * 35,
+                    direction: Math.random() < .5 ? -1 : 1,
+                    fireElapsed: 0
+                });
+                shooterMessage.textContent = "Musuh datang! Hindari tembakannya dan balas menyerang.";
             }
             if (shooterKeys.has("fire") && shooterFireElapsed >= 230) {
                 shooterFireElapsed = 0;
@@ -534,6 +565,27 @@
 
             shooterBullets.forEach((bullet) => { bullet.y -= 390 * step; });
             shooterMeteors.forEach((meteor) => { meteor.y += meteor.speed * step; });
+            shooterEnemies.forEach((enemy) => {
+                enemy.x += enemy.direction * 65 * step;
+                if (enemy.x < 22 || enemy.x > width - 22) enemy.direction *= -1;
+                enemy.fireElapsed += delta;
+                if (enemy.fireElapsed >= 1400) {
+                    enemy.fireElapsed = 0;
+                    const dx = shooterPlayerX - enemy.x;
+                    const dy = height - 35 - enemy.y;
+                    const distance = Math.hypot(dx, dy) || 1;
+                    shooterEnemyShots.push({
+                        x: enemy.x,
+                        y: enemy.y + 15,
+                        vx: (dx / distance) * 135,
+                        vy: (dy / distance) * 135
+                    });
+                }
+            });
+            shooterEnemyShots.forEach((shot) => {
+                shot.x += shot.vx * step;
+                shot.y += shot.vy * step;
+            });
 
             for (let m = shooterMeteors.length - 1; m >= 0; m -= 1) {
                 const meteor = shooterMeteors[m];
@@ -560,6 +612,35 @@
                         endShooterGame();
                         return;
                     }
+                }
+            }
+            for (let e = shooterEnemies.length - 1; e >= 0; e -= 1) {
+                const enemy = shooterEnemies[e];
+                for (let b = shooterBullets.length - 1; b >= 0; b -= 1) {
+                    const bullet = shooterBullets[b];
+                    if (Math.hypot(enemy.x - bullet.x, enemy.y - bullet.y) < 20) {
+                        shooterBullets.splice(b, 1);
+                        shooterEnemies.splice(e, 1);
+                        shooterScore += 3;
+                        shooterScoreDisplay.textContent = shooterScore;
+                        shooterMessage.textContent = "Musuh berhasil dikalahkan! +3 poin";
+                        break;
+                    }
+                }
+            }
+            for (let s = shooterEnemyShots.length - 1; s >= 0; s -= 1) {
+                const shot = shooterEnemyShots[s];
+                if (Math.hypot(shot.x - shooterPlayerX, shot.y - (height - 35)) < 19) {
+                    shooterEnemyShots.splice(s, 1);
+                    shooterLives -= 1;
+                    shooterLivesDisplay.textContent = shooterLives;
+                    shooterMessage.textContent = "Tembakan musuh mengenai pesawatmu!";
+                    if (shooterLives <= 0) {
+                        endShooterGame();
+                        return;
+                    }
+                } else if (shot.y > height + 10 || shot.x < -10 || shot.x > width + 10) {
+                    shooterEnemyShots.splice(s, 1);
                 }
             }
             for (let b = shooterBullets.length - 1; b >= 0; b -= 1) {
@@ -602,11 +683,14 @@
             shooterScore = 0;
             shooterLives = 3;
             shooterSpawnElapsed = 0;
+            shooterEnemySpawnElapsed = 0;
             shooterFireElapsed = 230;
             shooterLastFrame = 0;
             shooterPlayerX = shooterCanvas.clientWidth / 2;
             shooterBullets.length = 0;
             shooterMeteors.length = 0;
+            shooterEnemies.length = 0;
+            shooterEnemyShots.length = 0;
             shooterScoreDisplay.textContent = "0";
             shooterLivesDisplay.textContent = "3";
             shooterMessage.textContent = "Arahkan pesawat dan jangan biarkan meteor menyentuh bumi!";
