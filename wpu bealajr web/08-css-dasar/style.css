@@ -1,0 +1,15 @@
+
+        h1 {
+            font-size: +4;
+            font-family: arial;
+            color: rgb(16, 17, 92);
+            text-align: center;
+        }
+
+        p {
+            color: blue;
+            font-size: 30px;
+            text-align: center;
+        }
+        
+    
